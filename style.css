@@ -1,0 +1,21 @@
+.form-group{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    /* color:red; */
+}
+span{
+    color:red;
+}
+.log-btn{
+    /* align-content: flex-end; */
+    align-items: center;
+    justify-content: center;
+    /* justify-items: center; */
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    /* float:right; */
+   
+}
