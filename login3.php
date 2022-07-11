@@ -1,6 +1,8 @@
 <?php
+session_start();
 $login = false;
 $showError = false;
+$m_account_msg=false;
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     include 'partial/_dbconnect.php';
     $username = $_POST["username"];
@@ -8,29 +10,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
      
     // $sql = "Select * from users where username='$username' AND password='$password'";
-    $sql = "Select * from users where username='$username'";
+    $sql = "SELECT * FROM users WHERE `username`='$username' AND `password`='$password'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
-    echo $num;
-    // echo mysqli_fetch_assoc($result);
-    echo password_verify($password, $row['password']);
-    if ($num == 1){
-        while($row=mysqli_fetch_assoc($result)){
-            if (password_verify($password, $row['password'])){ 
-                $login = true;
-                session_start();
-                $_SESSION['loggedin'] = true;
-                $_SESSION['username'] = $username;
-                header("location: index.php");
-            } 
-            else{
-                $showError = "Invalid Credentials";
-            }
-        }
-        
+    echo $num;//If user created more than one account with same username and password then it will not allow to go inside index.php,therfore $num should be 1.
+    // $rows=mysqli_fetch_assoc($result);
+    // echo password_verify($password, $rows['password']);
+    if ($num==1){
+        $login=true;
+        $_SESSION['loggedin'] = true;
+        $_SESSION['username'] = $username;
+        header("location: index.php");
+    }
+    elseif($num>1){
+        $m_account_msg="You have more than one account";
     } 
     else{
-        $showError = "Invalid Credentials";
+            $showError = "Invalid Credentials";
+    }
+
+    if(isset($_POST['crt_account'])){
+        header('location:signup.php');
+        exit;
     }
 }
     
@@ -71,6 +72,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </button>
         </div> ';
         }
+        if($m_account_msg==true){
+        echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> '. $m_account_msg.'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> ';
+        }
+
     ?>
     <?php // include 'validation.php'?>
     <form class="form-group" action="login3.php" method="post">

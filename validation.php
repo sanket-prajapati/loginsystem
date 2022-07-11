@@ -1,6 +1,6 @@
 <?php
     
-    // $validaton=false;
+    $validaton=false;
     $username=$password=$cpassword="";
     $usernameErr=$passwordErr=$cpasswordErr="";
     
