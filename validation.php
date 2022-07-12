@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     }
     else{
     $username=test_input($_POST["username"]);
-     if (!preg_match("/^()%#!*$/",$username)) {
+     if (!preg_match("/^[a-z A-Z-']*$/",$username)) {
         $usernameErr = "Only letters and white space allowed";
         // $validation=true;
      }
